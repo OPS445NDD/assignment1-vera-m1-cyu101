@@ -3,8 +3,8 @@
 '''
 OPS445 Assignment 1
 Program: assignment1.py 
-Author: "Student Name"
-Semester: "Fall/Winter/Summer YYYY"
+Author: "Jared Yu"
+Semester: "Summer 2026"
 
 The python code in this file (assignment1.py) is original work written by
 "Student Name". No code in this file is copied from any other source
@@ -29,8 +29,28 @@ def day_of_week(year: int, month: int, date: int) -> str:
 
 def mon_max(month:int, year:int) -> int:
     "returns the maximum day for a given month. Includes leap year check"
-    ...
+    
+    if leap_year(year):
+        feb_max = 29
+    else:
+        feb_max = 28
 
+    mon_max = {
+        1:31,
+        2:feb_max,
+        3:31,
+        4:30,
+        5:31,
+        6:30,
+        7:31,
+        8:31,
+        9:30,
+        10:31,
+        11:30,
+        12:31
+    }
+
+    return mon_max[month]
 def after(date: str) -> str:
     '''
     after() -> date for next day in YYYY-MM-DD string format
@@ -43,26 +63,11 @@ def after(date: str) -> str:
     year = int(str_year)
     month = int(str_month)
     day = int(str_day)
-    lyear = year % 4
-    if lyear == 0:
-        feb_max = 29 # this is a leap year
-    else:
-        feb_max = 28 # this is not a leap year
-
-    lyear = year % 100
-    if lyear == 0:
-        feb_max = 28 # this is not a leap year
-
-    lyear = year % 400
-    if lyear == 0:
-        feb_max = 29 # this is a leap year
-
-    mon_max = { 1:31, 2:feb_max, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
 
     tmp_day = day + 1  # next day
 
-    if tmp_day > mon_max[month]:
-        to_day = tmp_day % mon_max[month]  # if tmp_day > this month's max, reset to 1 
+    if tmp_day > mon_max(month, year):
+        to_day = tmp_day % mon_max(month, year)  # if tmp_day > this month's max, reset to 1 
         tmp_month = month + 1
     else:
         to_day = tmp_day
@@ -86,7 +91,17 @@ def usage():
 
 def leap_year(year: int) -> bool:
     "return True if the year is a leap year"
-    ...
+    
+    if year % 400 == 0:
+        return True
+    
+    if year % 100 == 0:
+        return False
+    
+    if year % 4 == 0:
+        return True
+    
+    return False
 
 def valid_date(date: str) -> bool:
     "check validity of date and return True if valid"
