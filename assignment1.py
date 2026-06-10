@@ -104,11 +104,56 @@ def leap_year(year: int) -> bool:
     return False
 
 def valid_date(date: str) -> bool:
-    "check validity of date and return True if valid"
+    "return True if date is valid YYYY-MM-DD format"
+
+    if len(date) != 10:
+        return False
+    
+    if date[4] != '-' or date[7] != '-':
+        return False
+
+    str_year, str_month, str_day = date.split('-')
+
+    if not str_year.isdigit() or not str_month.isdigit() or not str_day.isdigit():
+        return False
+
+    year = int(str_year)
+    month = int(str_month)
+    day = int(str_day)
+
+
+    if month < 1 or month > 12:
+        return False
+
+    if day < 1 or day > mon_max(month, year):
+        return False
+
+    return True
+    
     ...
 
 def day_count(start_date: str, stop_date: str) -> int:
-    "Loops through range of dates, and returns number of weekend days"
+    "count Saturdays and Sundays between start_date and stop_date"
+
+    count = 0
+    current_date = start_date
+
+    while current_date != after(stop_date):
+
+        str_year, str_month, str_day = current_date.split('-')
+
+        day = day_of_week(
+            int(str_year),
+            int(str_month),
+            int(str_day)
+        )
+
+        if day == 'sat' or day == 'sun':
+            count += 1
+
+        current_date = after(current_date)
+
+    return count
     ...
 
 if __name__ == "__main__":
